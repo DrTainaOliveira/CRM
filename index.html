@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>CRM Tainá Oliveira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+/* Layout: barra da marca no topo, abas, e cada aba como uma mesa de trabalho (painel, funil em colunas, semana da agenda, lista). */
+:root{
+  --bg:#F5F1EA; --surface:#FFFDF9; --sunk:#ECE6DC; --line:#DDD4C6;
+  --ink:#1F1D1A; --muted:#6B6458; --olive:#4F5440; --olive-deep:#363A2B; --olive-soft:#E3E5D8;
+  --umber:#7A6553; --wa:#1F7A4D;
+  --ok:#2F6B45; --ok-bg:#E2EEE5; --warn:#8A5A12; --warn-bg:#F6EAD3; --bad:#9A3A2E; --bad-bg:#F5E1DD; --info:#3E5A78; --info-bg:#E2E9F1;
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171815; --surface:#202219; --sunk:#2A2C22; --line:#3A3D30;
+  --ink:#EFEADF; --muted:#A9A393; --olive:#A9B08C; --olive-deep:#C8CEAE; --olive-soft:#2F3326;
+  --umber:#C7AE97; --wa:#4FB383;
+  --ok:#8FCB9F; --ok-bg:#24352A; --warn:#E4B66A; --warn-bg:#3A2F1C; --bad:#E79A8D; --bad-bg:#3D2420; --info:#9DB9D8; --info-bg:#222F3D;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171815; --surface:#202219; --sunk:#2A2C22; --line:#3A3D30;
+  --ink:#EFEADF; --muted:#A9A393; --olive:#A9B08C; --olive-deep:#C8CEAE; --olive-soft:#2F3326;
+  --umber:#C7AE97; --wa:#4FB383;
+  --ok:#8FCB9F; --ok-bg:#24352A; --warn:#E4B66A; --warn-bg:#3A2F1C; --bad:#E79A8D; --bad-bg:#3D2420; --info:#9DB9D8; --info-bg:#222F3D;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--olive-deep);color:#F5F1EA}
+:root:not([data-theme="light"]) header.top{}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-block:18px 0}
+.brand{display:flex;flex-direction:column;margin-right:auto}
+.brand b{font-family:var(--display);font-weight:600;font-size:28px;letter-spacing:.06em;line-height:1;color:#F5F1EA}
+.brand span{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#CDBFAD;margin-top:6px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid transparent;border-radius:999px;padding:9px 16px;font-weight:700;font-size:14px;cursor:pointer;background:var(--surface);color:var(--ink);border-color:var(--line);display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--olive)}
+.btn.primary{background:var(--olive);color:var(--surface);border-color:var(--olive)}
+.top .btn{background:#F5F1EA;color:#363A2B;border-color:#F5F1EA}
+.top .btn.primary{background:#A9B08C;border-color:#A9B08C;color:#1F1D1A}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.small{padding:6px 12px;font-size:13px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+nav.tabs{display:flex;gap:4px;width:100%;overflow-x:auto;margin-top:10px}
+nav.tabs button{background:none;border:0;color:#CDBFAD;padding:12px 14px 14px;font-weight:700;font-size:14px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:#F5F1EA;border-bottom-color:#A9B08C}
+main{padding-block:22px 60px}
+.notice{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;font-size:14px}
+.notice.example{background:var(--warn-bg);border-color:transparent;color:var(--warn)}
+.notice.error{background:var(--bad-bg);border-color:transparent;color:var(--bad)}
+h2.sec{font-family:var(--display);font-weight:600;font-size:30px;margin:0;line-height:1.1;text-wrap:balance}
+.sechead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.sub{color:var(--muted);font-size:13px}
+.monthnav{display:flex;align-items:center;gap:6px}
+.monthnav strong{min-width:150px;text-align:center;font-weight:700;text-transform:capitalize}
+.iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:16px;display:grid;place-items:center}
+/* Painel */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.kpi .l{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.kpi .v{font-family:var(--display);font-size:40px;font-weight:600;line-height:1.05;margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi .h{font-size:12px;color:var(--muted)}
+.kpi.lead{background:var(--olive);border-color:var(--olive);color:var(--surface)}
+.kpi.lead .l,.kpi.lead .h{color:var(--olive-soft)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.panel h3{margin:0 0 12px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--umber)}
+.funnelbars{display:flex;flex-direction:column;gap:8px}
+.fb{display:grid;grid-template-columns:110px 1fr 34px;gap:10px;align-items:center;font-size:13px}
+.fb .track{height:12px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.fb .fill{height:100%;background:var(--olive);border-radius:6px}
+.fb.lost .fill{background:var(--bad)}
+.fb .n{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.list{display:flex;flex-direction:column}
+.row{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
+.row:first-child{border-top:0}
+.row .time{font-weight:800;font-variant-numeric:tabular-nums;min-width:48px}
+.row .who{min-width:0;flex:1}
+.row .who b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .who span{font-size:12px;color:var(--muted)}
+.empty{color:var(--muted);font-size:14px;padding:8px 0}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.st-agendado{background:var(--info-bg);color:var(--info)}
+.st-confirmado{background:var(--olive-soft);color:var(--olive-deep)}
+.st-realizado{background:var(--ok-bg);color:var(--ok)}
+.st-faltou{background:var(--warn-bg);color:var(--warn)}
+.st-cancelado{background:var(--bad-bg);color:var(--bad)}
+.late{background:var(--warn-bg);color:var(--warn)}
+/* Funil */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.search{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 14px;min-width:0;width:240px;max-width:100%}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:12px;overflow-x:auto;padding-bottom:10px}
+.col{background:var(--sunk);border-radius:var(--r);padding:10px;min-height:240px;display:flex;flex-direction:column;gap:8px}
+.col.over{outline:2px dashed var(--olive)}
+.colhead{display:flex;justify-content:space-between;align-items:center;padding:4px 4px 6px;font-weight:800;font-size:13px}
+.colhead .count{font-variant-numeric:tabular-nums;color:var(--muted)}
+.colhead i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--olive)}
+.col[data-stage="perdida"] .colhead i{background:var(--bad)}
+.col[data-stage="cliente"] .colhead i{background:var(--ok)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:grab}
+.card:hover{border-color:var(--olive)}
+.card b{font-size:14px}
+.card .meta{display:flex;flex-wrap:wrap;gap:4px}
+.card .foot{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.card select{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:4px 6px;font-size:12px;max-width:130px}
+.wabtn{background:var(--wa);border-color:var(--wa);color:#fff;text-decoration:none}
+.wabtn:hover{filter:brightness(1.08);border-color:var(--wa)}
+.msgs{display:flex;flex-wrap:wrap;gap:6px}
+.wa{color:var(--wa);font-weight:800;text-decoration:none;font-size:12px}
+.wa:hover{text-decoration:underline}
+/* Agenda */
+.week{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);min-height:260px;display:flex;flex-direction:column;min-width:0}
+.day.today{border-color:var(--olive);box-shadow:0 0 0 1px var(--olive)}
+.dayhead{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline}
+.dayhead b{font-family:var(--display);font-size:24px;font-weight:600;line-height:1}
+.dayhead span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.daybody{padding:8px;display:flex;flex-direction:column;gap:6px;flex:1}
+.appt{border-radius:8px;padding:8px 10px;border-left:4px solid var(--info);background:var(--info-bg);cursor:pointer;min-width:0}
+.appt .t{font-weight:800;font-size:13px;font-variant-numeric:tabular-nums}
+.appt .n{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appt .p{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appt.confirmado{border-color:var(--olive);background:var(--olive-soft)}
+.appt.realizado{border-color:var(--ok);background:var(--ok-bg)}
+.appt.faltou{border-color:var(--warn);background:var(--warn-bg)}
+.appt.cancelado{border-color:var(--bad);background:var(--bad-bg);opacity:.7}
+.appt.cancelado .n{text-decoration:line-through}
+.addday{margin-top:auto;border:1px dashed var(--line);background:none;border-radius:8px;padding:6px;color:var(--muted);cursor:pointer;font-size:13px;font-weight:700}
+.addday:hover{border-color:var(--olive);color:var(--olive)}
+@media (max-width:900px){.week{grid-template-columns:1fr}.day{min-height:0}}
+/* Clientes */
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th{text-align:left;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:12px 14px;border-bottom:1px solid var(--line);font-weight:700}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--bg)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(20,20,16,.55);display:grid;place-items:center;padding:16px;z-index:50}
+.modal{background:var(--surface);border-radius:16px;width:100%;max-width:560px;max-height:calc(100% - 20px);overflow:auto;padding:22px}
+.modal h3{font-family:var(--display);font-size:28px;font-weight:600;margin:0 0 14px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form .full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:12px;font-weight:700;color:var(--muted)}
+.field input,.field select,.field textarea{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:9px 11px;width:100%}
+.field textarea{min-height:76px;resize:vertical}
+.mfoot{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;margin-top:18px}
+.mfoot .right{display:flex;gap:8px;margin-left:auto}
+.hint{font-size:12px;color:var(--muted)}
+@media (max-width:520px){.form{grid-template-columns:1fr}.brand b{font-size:24px}}
+#login{min-height:100vh;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-left,0px))}
+.loginbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;width:100%;max-width:380px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:700;font-size:14px;z-index:60}
+@media (prefers-reduced-motion:no-preference){.card,.appt,.btn{transition:border-color .15s,background .15s}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head>
+<body>
+
+<section id="login" hidden>
+  <div class="loginbox">
+    <div class="brand" style="margin:0 0 18px"><b style="color:var(--olive-deep)">TAINÁ OLIVEIRA</b><span style="color:var(--umber)">CRM da clínica</span></div>
+    <form id="fLogin" class="form" style="grid-template-columns:1fr">
+      <div class="field"><label for="lgEmail">E-mail</label><input id="lgEmail" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="lgPass">Senha</label><input id="lgPass" type="password" autocomplete="current-password" required></div>
+      <button class="btn primary" id="lgBtn" type="submit" style="justify-content:center">Entrar</button>
+      <div id="lgErr" class="hint" style="color:var(--bad)"></div>
+    </form>
+  </div>
+</section>
+<div id="app">
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><b>TAINÁ OLIVEIRA</b><span>CRM da clínica · Leme/SP</span></div>
+    <div class="actions">
+      <button class="btn" id="btnNovoLead" type="button">+ Novo contato</button>
+      <button class="btn primary" id="btnNovoAppt" type="button">+ Agendar</button>
+      <button class="btn ghost" id="btnSair" type="button" style="color:#F5F1EA;border-color:#8A8E78">Sair</button>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Seções">
+      <button role="tab" data-tab="painel" aria-selected="true">Painel</button>
+      <button role="tab" data-tab="funil" aria-selected="false">Funil</button>
+      <button role="tab" data-tab="agenda" aria-selected="false">Agenda</button>
+      <button role="tab" data-tab="clientes" aria-selected="false">Clientes</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="notices"></div>
+  <section id="view"></section>
+</main>
+</div>
+<div id="modalRoot"></div>
+
+<script>
+const STAGES=[
+  {id:'novo',label:'Novo contato'},
+  {id:'conversa',label:'Em conversa'},
+  {id:'agendada',label:'Agendada'},
+  {id:'atendida',label:'Atendida'},
+  {id:'cliente',label:'Fechou'},
+  {id:'perdida',label:'Perdida'}];
+const ORIGENS=['Já é cliente','Instagram','Anúncio','WhatsApp','Indicação','Google','Site','Outro'];
+const MOTIVOS=['Preço','Não respondeu','Desistiu','Agendou e faltou','Foi em outra clínica','Outro'];
+const PROCS=['Avaliação','Toxina botulínica','Preenchimento labial','Bioestimulador de colágeno','Ultrassom microfocado','Revitalização facial','Limpeza de pele','Microagulhamento','Clube da Tai','Outro'];
+const ASTATUS=[['agendado','Agendado'],['confirmado','Confirmado'],['realizado','Realizado'],['faltou','Faltou'],['cancelado','Cancelado']];
+const S={leads:[],appts:[],tab:'painel',month:null,week:null,q:'',qc:'',fEtapa:'',fMeses:'',db:null,canWrite:true,loadedL:false,loadedA:false,slow:false,error:''};
+
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const today=()=>ymd(new Date());
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ymd(d)};
+const monday=s=>{const d=parse(s);const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return ymd(d)};
+const br=s=>{if(!s)return'';const[a,b,c]=s.split('-');return c+'/'+b};
+const brFull=s=>{if(!s)return'';const[a,b,c]=s.split('-');return c+'/'+b+'/'+a};
+const money=v=>(Number(v)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+const DOW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const MONTHS=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const stageLabel=id=>(STAGES.find(s=>s.id===id)||{}).label||id;
+const phoneDigits=p=>{let d=String(p||'').replace(/\D/g,'');if(!d)return'';if(d.length<=11)d='55'+d;return d};
+const waLink=(p,msg)=>{const d=phoneDigits(p);return d?'https://wa.me/'+d+(msg?'?text='+encodeURIComponent(msg):''):''};
+const daysSince=s=>s?Math.round((parse(today())-parse(s))/864e5):0;
+S.month=today().slice(0,7);S.week=monday(today());
+
+function toast(t){const el=document.createElement('div');el.className='toast';el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2200)}
+
+/* ---------- dados (Supabase) ---------- */
+// >>> COLE AQUI os dados do seu projeto (Supabase > Project Settings > API)
+const SUPABASE_URL='https://oruerbtcvqlzximodqrn.supabase.co';
+const SUPABASE_KEY='sb_publishable_NzlO4oTxj10S2yIhoXQatw_bwMu0vG-';
+let sb=null;
+const nz=v=>v===''||v===undefined?null:v;
+const fromLead=r=>({id:r.id,nome:r.nome||'',telefone:r.telefone||'',origem:r.origem||'',interesse:r.interesse||'',etapa:r.etapa||'novo',entrada:r.entrada||'',retorno:r.retorno||'',obs:r.obs||'',valor:r.valor??'',fechouEm:r.fechou_em||'',perdidaEm:r.perdida_em||'',motivoPerda:r.motivo_perda||'',ultimoAtend:r.ultimo_atend||'',ultimoProc:r.ultimo_proc||'',atualizado:r.atualizado||''});
+const toLead=d=>({nome:d.nome,telefone:nz(d.telefone),origem:nz(d.origem),interesse:nz(d.interesse),etapa:d.etapa||'novo',entrada:nz(d.entrada),retorno:nz(d.retorno),obs:nz(d.obs),valor:d.valor===''||d.valor==null?null:Number(d.valor),fechou_em:nz(d.fechouEm),perdida_em:nz(d.perdidaEm),motivo_perda:nz(d.motivoPerda),ultimo_atend:nz(d.ultimoAtend),ultimo_proc:nz(d.ultimoProc),atualizado:new Date().toISOString()});
+const fromAppt=r=>({id:r.id,leadId:r.lead_id||'',nome:r.nome||'',procedimento:r.procedimento||'',data:r.data||'',hora:(r.hora||'').slice(0,5),duracao:r.duracao||60,status:r.status||'agendado',obs:r.obs||'',lembreteEm:r.lembrete_em||'',posEm:r.pos_em||'',atualizado:r.atualizado||''});
+const toAppt=d=>({lead_id:nz(d.leadId),nome:d.nome,procedimento:nz(d.procedimento),data:d.data,hora:nz(d.hora),duracao:Number(d.duracao)||60,status:d.status||'agendado',obs:nz(d.obs),lembrete_em:nz(d.lembreteEm),pos_em:nz(d.posEm),atualizado:new Date().toISOString()});
+async function loadAll(){
+  const [l,a]=await Promise.all([sb.from('leads').select('*'),sb.from('agenda').select('*')]);
+  if(l.error||a.error){S.error='Não foi possível carregar os dados: '+((l.error||a.error).message||'erro');render();return}
+  S.error='';S.leads=l.data.map(fromLead);S.appts=a.data.map(fromAppt);S.loadedL=S.loadedA=true;render();
+}
+let reloadT=null;const reloadSoon=()=>{clearTimeout(reloadT);reloadT=setTimeout(loadAll,400)};
+async function boot(){
+  render();
+  if(SUPABASE_URL.startsWith('COLE')||!window.supabase){S.error='CRM ainda não configurado: cole a Project URL e a chave anon no arquivo crm.html.';render();return}
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);S.db=sb;
+  const {data:{session}}=await sb.auth.getSession();
+  sb.auth.onAuthStateChange((ev,s)=>{if(ev==='SIGNED_OUT')showLogin();if(ev==='SIGNED_IN'&&s){hideLogin();start()}});
+  if(session)start();else showLogin();
+}
+let started=false;
+function start(){
+  loadAll();if(started)return;started=true;
+  sb.channel('crm').on('postgres_changes',{event:'*',schema:'public',table:'leads'},reloadSoon).on('postgres_changes',{event:'*',schema:'public',table:'agenda'},reloadSoon).subscribe();
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadAll()});
+}
+function showLogin(){
+  $('#login').hidden=false;$('#app').hidden=true;
+  $('#fLogin').onsubmit=async e=>{e.preventDefault();const btn=$('#lgBtn');btn.disabled=true;$('#lgErr').textContent='';
+    const {error}=await sb.auth.signInWithPassword({email:$('#lgEmail').value.trim(),password:$('#lgPass').value});
+    btn.disabled=false;if(error)$('#lgErr').textContent='E-mail ou senha incorretos.';};
+}
+function hideLogin(){$('#login').hidden=true;$('#app').hidden=false}
+async function saveDoc(col,id,data){
+  if(!sb){toast('CRM não configurado');return null}
+  const payload=col==='leads'?toLead(data):toAppt(data);
+  const q=id?sb.from(col).update(payload).eq('id',id).select('id').single():sb.from(col).insert(payload).select('id').single();
+  const {data:row,error}=await q;
+  if(error){toast('Não foi possível salvar. Tente de novo.');console.error(error);return null}
+  reloadSoon();return row.id;
+}
+async function delDoc(col,id){const {error}=await sb.from(col).delete().eq('id',id);if(error)toast('Não foi possível excluir');reloadSoon()}
+function clean(o){const r={};for(const k in o){if(k!=='id'&&o[k]!==undefined)r[k]=o[k]}return r}
+
+async function setStage(lead,etapa){
+  if(lead.etapa===etapa)return;
+  const d=clean(lead);d.etapa=etapa;d.atualizado=new Date().toISOString();
+  if(etapa==='cliente'&&!d.fechouEm)d.fechouEm=today();
+  if(etapa==='perdida'&&!d.perdidaEm)d.perdidaEm=today();
+  if(etapa!=='cliente')delete d.fechouEm;
+  if(etapa!=='perdida'){delete d.perdidaEm;delete d.motivoPerda}
+  await saveDoc('leads',lead.id,d);
+  if(etapa==='perdida'&&!lead.motivoPerda)openLead(Object.assign({},lead,d,{id:lead.id}));
+}
+
+/* ---------- mensagens de WhatsApp ---------- */
+const ENDERECO='Av. 29 de Agosto, 36 · Sala 6 · Centro, Leme';
+const DIAS=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const first=n=>String(n||'').replace(/^Exemplo · /,'').trim().split(' ')[0];
+const procTxt=p=>p?String(p).toLowerCase():'seu procedimento';
+const quando=d=>{if(!d)return'';const t=today();if(d===t)return'hoje';if(d===addDays(t,1))return'amanhã';if(d===addDays(t,-1))return'ontem';return DIAS[parse(d).getDay()]+', '+br(d)};
+function msgFor(tipo,{nome,proc,data,hora,meses}){
+  const n=first(nome);
+  switch(tipo){
+    case'boasvindas':return `Oi ${n}! Aqui é a Tainá, biomédica esteta 🌿 Que bom ter você por aqui! Me conta, o que você gostaria de cuidar?`;
+    case'confirmacao':return `Oi ${n}! Tudo bem? Aqui é a Tainá 🌿 Seu horário de ${procTxt(proc)} ficou marcado para ${data?DIAS[parse(data).getDay()]+', '+brFull(data):''} às ${hora||''}. Endereço: ${ENDERECO}. Qualquer coisa é só me chamar!`;
+    case'lembrete':return `Oi ${n}! Passando para lembrar do seu horário ${quando(data)} às ${hora||''} (${procTxt(proc)}). Posso confirmar sua presença? 🌿`;
+    case'pos':return `Oi ${n}! Como você está depois do ${procTxt(proc)}${data?' de '+quando(data):''}? Qualquer dúvida sobre os cuidados, é só me chamar 🌿`;
+    case'retorno':return `Oi ${n}! Tudo bem? Aqui é a Tainá 🌿 Já faz ${meses!=null?mesesTxt(meses):'um tempinho'} do seu ${procTxt(proc)}, e esse é um ótimo momento para cuidarmos da manutenção. Quer que eu veja um horário para você?`;
+    default:return `Oi ${n}! Tudo bem? Aqui é a Tainá 🌿`;
+  }
+}
+const phoneOf=a=>{const l=S.leads.find(x=>x.id===a.leadId);return l?l.telefone:''};
+const waBtn=(tel,txt,label,extra='')=>waLink(tel)?`<a class="btn small wabtn" href="${waLink(tel,txt)}" target="_blank" rel="noopener" ${extra}>${label}</a>`:'';
+async function markAppt(id,campo){const a=S.appts.find(x=>x.id===id);if(!a)return;const d=clean(a);d[campo]=today();await saveDoc('agenda',id,d)}
+
+/* ---------- render ---------- */
+function render(){
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===S.tab)));
+  const n=[];
+  if(S.error)n.push(`<div class="notice error">${esc(S.error)}</div>`);
+  else if(S.slow)n.push(`<div class="notice">Ainda carregando os dados… se demorar, verifique a internet.</div>`);
+  if(!S.canWrite)n.push(`<div class="notice">Você está vendo o CRM em modo leitura.</div>`);
+  const ex=S.leads.filter(l=>l.exemplo).length+S.appts.filter(a=>a.exemplo).length;
+  if(ex&&S.canWrite)n.push(`<div class="notice example"><span><b>Dados de exemplo.</b> Os contatos e horários marcados como exemplo servem só para mostrar como funciona.</span><button class="btn small" id="btnClearEx" type="button">Apagar exemplos</button></div>`);
+  $('#notices').innerHTML=n.join('');
+  const b=$('#btnClearEx');if(b)b.onclick=()=>{if(b.dataset.c){clearExamples()}else{b.dataset.c=1;b.textContent='Confirmar: apagar '+ex+' itens'}};
+  const v=$('#view');
+  if(S.tab==='painel')v.innerHTML=viewPainel();
+  if(S.tab==='funil')v.innerHTML=viewFunil();
+  if(S.tab==='agenda')v.innerHTML=viewAgenda();
+  if(S.tab==='clientes')v.innerHTML=viewClientes();
+  bind();
+  $('#btnNovoLead').disabled=$('#btnNovoAppt').disabled=!S.canWrite||!S.db;
+}
+async function clearExamples(){
+  for(const l of S.leads.filter(x=>x.exemplo))await delDoc('leads',l.id);
+  for(const a of S.appts.filter(x=>x.exemplo))await delDoc('agenda',a.id);
+  toast('Exemplos apagados');
+}
+const loading=()=>!(S.loadedL&&S.loadedA)&&!S.leads.length&&!S.appts.length;
+
+function viewPainel(){
+  const m=S.month,[Y,M]=m.split('-').map(Number);
+  const inM=s=>s&&s.slice(0,7)===m;
+  const novos=S.leads.filter(l=>inM(l.entrada));
+  const ag=S.appts.filter(a=>inM(a.data)&&a.status!=='cancelado');
+  const real=S.appts.filter(a=>inM(a.data)&&a.status==='realizado');
+  const falt=S.appts.filter(a=>inM(a.data)&&a.status==='faltou');
+  const fech=S.leads.filter(l=>l.etapa==='cliente'&&inM(l.fechouEm));
+  const perd=S.leads.filter(l=>l.etapa==='perdida'&&inM(l.perdidaEm));
+  const fat=fech.reduce((s,l)=>s+(Number(l.valor)||0),0);
+  const conv=novos.length?Math.round(fech.length/novos.length*100):0;
+  const counts=STAGES.map(s=>({s,n:S.leads.filter(l=>l.etapa===s.id).length}));
+  const maxc=Math.max(1,...counts.map(c=>c.n));
+  const org={};novos.forEach(l=>{const o=l.origem||'Outro';org[o]=(org[o]||0)+1});
+  const orgs=Object.entries(org).sort((a,b)=>b[1]-a[1]);const maxo=Math.max(1,...orgs.map(o=>o[1]));
+  const mot={};perd.forEach(l=>{const o=l.motivoPerda||'Sem motivo';mot[o]=(mot[o]||0)+1});
+  const mots=Object.entries(mot).sort((a,b)=>b[1]-a[1]);
+  const t=today(),am=addDays(t,1);
+  const prox=S.appts.filter(a=>(a.data===t||a.data===am)&&a.status!=='cancelado').sort((a,b)=>(a.data+a.hora).localeCompare(b.data+b.hora));
+  const ret=S.leads.filter(l=>l.retorno&&l.retorno<=t&&!['cliente','perdida'].includes(l.etapa)).sort((a,b)=>a.retorno.localeCompare(b.retorno));
+  const L=loading();
+  return `
+  <div class="sechead"><div><h2 class="sec">Resumo do mês</h2><div class="sub">Contatos pela data de entrada · fechamentos e perdas pela data em que mudaram</div></div>
+    <div class="monthnav"><button class="iconbtn" data-mnav="-1" aria-label="Mês anterior">‹</button><strong>${MONTHS[M-1]} ${Y}</strong><button class="iconbtn" data-mnav="1" aria-label="Próximo mês">›</button></div></div>
+  <div class="kpis">
+    <div class="kpi"><div class="l">Novos contatos</div><div class="v">${L?'–':novos.length}</div><div class="h">entraram no mês</div></div>
+    <div class="kpi"><div class="l">Agendamentos</div><div class="v">${L?'–':ag.length}</div><div class="h">${real.length} realizados · ${falt.length} faltas</div></div>
+    <div class="kpi lead"><div class="l">Fecharam</div><div class="v">${L?'–':fech.length}</div><div class="h">${conv}% dos novos contatos</div></div>
+    <div class="kpi"><div class="l">Perdidas</div><div class="v">${L?'–':perd.length}</div><div class="h">no mês</div></div>
+    <div class="kpi"><div class="l">Faturado</div><div class="v" style="font-size:32px">${L?'–':money(fat)}</div><div class="h">valor das que fecharam</div></div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><h3>Hoje e amanhã</h3><div class="list">${prox.length?prox.map(a=>`<div class="row" data-appt="${a.id}"><span class="time">${esc(a.hora||'--:--')}</span><span class="who"><b>${esc(a.nome)}</b><span>${a.data===t?'Hoje':'Amanhã'} · ${esc(a.procedimento||'')}</span></span><span class="chip st-${a.status}">${esc(statusLabel(a.status))}</span></div>`).join(''):`<div class="empty">Nenhum horário para hoje ou amanhã. Use <b>+ Agendar</b> para marcar.</div>`}</div></div>
+    <div class="panel"><h3>Retornos para fazer</h3><div class="list">${ret.length?ret.map(l=>`<div class="row" data-lead="${l.id}"><span class="who"><b>${esc(l.nome)}</b><span>${esc(stageLabel(l.etapa))} · ${esc(l.interesse||'')}</span></span><span class="chip ${l.retorno<t?'late':''}">${l.retorno<t?'atrasado ':''}${br(l.retorno)}</span>${waLink(l.telefone)?waBtn(l.telefone,msgFor(l.etapa==='atendida'?'retorno':'oi',{nome:l.nome,proc:l.interesse}),'WhatsApp'):''}</div>`).join(''):`<div class="empty">Nenhum retorno pendente. Ao cadastrar um contato, preencha "Retornar em" para ele aparecer aqui no dia.</div>`}</div></div>
+    <div class="panel"><h3>Mensagens para enviar</h3>${(()=>{
+      const amanha=S.appts.filter(a=>a.data===am&&a.status==='agendado'&&!a.lembreteEm).sort((a,b)=>(a.hora||'').localeCompare(b.hora||''));
+      const ontem=addDays(t,-1);const pos=S.appts.filter(a=>(a.data===ontem||a.data===t)&&a.status==='realizado'&&!a.posEm);
+      const rows=[...amanha.map(a=>({a,tipo:'lembrete',lab:'Lembrete de amanhã',btn:'Enviar lembrete',campo:'lembreteEm'})),...pos.map(a=>({a,tipo:'pos',lab:'Pós-procedimento',btn:'Perguntar como está',campo:'posEm'}))];
+      if(!rows.length)return `<div class="empty">Tudo em dia. Aqui aparecem os lembretes de quem vem amanhã e o pós de quem foi atendida.</div>`;
+      return `<div class="list">${rows.map(r=>{const tel=phoneOf(r.a);return `<div class="row" style="cursor:default"><span class="who"><b>${esc(r.a.nome)}</b><span>${r.lab} · ${esc(r.a.procedimento||'')} · ${esc(r.a.hora||'')}</span></span>${tel?waBtn(tel,msgFor(r.tipo,{nome:r.a.nome,proc:r.a.procedimento,data:r.a.data,hora:r.a.hora}),r.btn,`data-mark="${r.a.id}" data-campo="${r.campo}"`):'<span class="chip">sem WhatsApp</span>'}</div>`}).join('')}</div>`})()}</div>
+    <div class="panel"><h3>Funil agora</h3><div class="funnelbars">${counts.map(c=>`<div class="fb ${c.s.id==='perdida'?'lost':''}"><span>${c.s.label}</span><span class="track"><span class="fill" style="width:${c.n/maxc*100}%"></span></span><span class="n">${c.n}</span></div>`).join('')}</div></div>
+    <div class="panel"><h3>De onde vieram (mês)</h3>${orgs.length?`<div class="funnelbars">${orgs.map(([o,n])=>`<div class="fb"><span>${esc(o)}</span><span class="track"><span class="fill" style="width:${n/maxo*100}%"></span></span><span class="n">${n}</span></div>`).join('')}</div>`:`<div class="empty">Sem contatos novos neste mês.</div>`}
+      ${mots.length?`<h3 style="margin-top:18px">Por que perdemos</h3><div class="funnelbars">${mots.map(([o,n])=>`<div class="fb lost"><span>${esc(o)}</span><span class="track"><span class="fill" style="width:${n/Math.max(...mots.map(x=>x[1]))*100}%"></span></span><span class="n">${n}</span></div>`).join('')}</div>`:''}</div>
+  </div>`;
+}
+const statusLabel=s=>(ASTATUS.find(x=>x[0]===s)||[0,s])[1];
+
+function viewFunil(){
+  const q=S.q.trim().toLowerCase();
+  const ls=S.leads.filter(l=>!q||(l.nome+' '+(l.interesse||'')+' '+(l.telefone||'')).toLowerCase().includes(q));
+  const t=today();
+  return `<div class="sechead"><div><h2 class="sec">Funil de clientes</h2><div class="sub">Arraste o cartão para outra coluna ou troque a etapa no próprio cartão</div></div>
+   <div class="toolbar"><input class="search" id="q" type="search" placeholder="Buscar nome, procedimento…" value="${esc(S.q)}" aria-label="Buscar no funil"></div></div>
+  <div class="board">${STAGES.map(s=>{const items=ls.filter(l=>l.etapa===s.id).sort((a,b)=>(b.atualizado||'').localeCompare(a.atualizado||''));
+    return `<div class="col" data-stage="${s.id}"><div class="colhead"><span><i></i>${s.label}</span><span class="count">${items.length}</span></div>
+    ${items.map(l=>`<div class="card" draggable="${S.canWrite}" data-lead="${l.id}">
+      <b>${esc(l.nome)}${l.exemplo?' <span class="chip">exemplo</span>':''}</b>
+      <div class="meta">${l.interesse?`<span class="chip">${esc(l.interesse)}</span>`:''}${l.origem?`<span class="chip">${esc(l.origem)}</span>`:''}${l.retorno&&!['cliente','perdida'].includes(l.etapa)?`<span class="chip ${l.retorno<=t?'late':''}">retorno ${br(l.retorno)}</span>`:''}${s.id==='perdida'&&l.motivoPerda?`<span class="chip st-cancelado">${esc(l.motivoPerda)}</span>`:''}${s.id==='cliente'&&l.valor?`<span class="chip st-realizado">${money(l.valor)}</span>`:''}</div>
+      <div class="foot"><span>${l.entrada?'há '+daysSince(l.entrada)+' dia'+(daysSince(l.entrada)===1?'':'s'):''}</span>${waLink(l.telefone)?`<a class="wa" href="${waLink(l.telefone)}" target="_blank" rel="noopener">WhatsApp</a>`:''}
+      ${S.canWrite?`<select data-stagesel="${l.id}" aria-label="Etapa de ${esc(l.nome)}">${STAGES.map(x=>`<option value="${x.id}" ${x.id===l.etapa?'selected':''}>${x.label}</option>`).join('')}</select>`:''}</div></div>`).join('')}
+    ${!items.length?`<div class="empty" style="padding:4px">${s.id==='novo'&&!S.leads.length?'Toque em <b>+ Novo contato</b> para cadastrar a primeira cliente.':'—'}</div>`:''}</div>`}).join('')}</div>`;
+}
+
+function viewAgenda(){
+  const ws=S.week,days=[0,1,2,3,4,5].map(i=>addDays(ws,i)),t=today();
+  const we=addDays(ws,5);
+  const label=`${br(ws)} a ${brFull(we)}`;
+  return `<div class="sechead"><div><h2 class="sec">Agenda</h2><div class="sub">Segunda a sábado · toque num horário para editar ou confirmar</div></div>
+   <div class="monthnav"><button class="iconbtn" data-wnav="-7" aria-label="Semana anterior">‹</button><strong>${label}</strong><button class="iconbtn" data-wnav="7" aria-label="Próxima semana">›</button><button class="btn small" data-wnav="0" type="button">Hoje</button></div></div>
+  <div class="week">${days.map(d=>{const dt=parse(d);const items=S.appts.filter(a=>a.data===d).sort((a,b)=>(a.hora||'').localeCompare(b.hora||''));
+   return `<div class="day ${d===t?'today':''}"><div class="dayhead"><span>${DOW[dt.getDay()]}</span><b>${pad(dt.getDate())}/${pad(dt.getMonth()+1)}</b></div>
+   <div class="daybody">${items.map(a=>`<div class="appt ${a.status}" data-appt="${a.id}"><div class="t">${esc(a.hora||'--:--')} <span class="chip st-${a.status}" style="float:right">${esc(statusLabel(a.status))}</span></div><div class="n">${esc(a.nome)}</div><div class="p">${esc(a.procedimento||'')}${a.duracao?' · '+a.duracao+' min':''}</div></div>`).join('')}
+   ${S.canWrite&&S.db?`<button class="addday" data-addday="${d}" type="button">+ marcar</button>`:''}</div></div>`}).join('')}</div>`;
+}
+
+const MESES=[['','Qualquer tempo'],['0-1','Atendida há menos de 1 mês'],['1-3','Sem atendimento há 1 a 3 meses'],['3-6','Sem atendimento há 3 a 6 meses'],['6-12','Sem atendimento há 6 a 12 meses'],['12-999','Sem atendimento há mais de 1 ano'],['nunca','Nunca atendida']];
+function lastInfo(l){
+  const a=S.appts.filter(x=>x.leadId===l.id&&x.status==='realizado').sort((a,b)=>b.data.localeCompare(a.data))[0];
+  let data=a?a.data:'',proc=a?a.procedimento:'';
+  if(l.ultimoAtend&&l.ultimoAtend>data){data=l.ultimoAtend;proc=l.ultimoProc||l.interesse||''}
+  const futuro=S.appts.some(x=>x.leadId===l.id&&x.data>=today()&&['agendado','confirmado'].includes(x.status));
+  return{data,proc,meses:data?daysSince(data)/30.44:null,futuro};
+}
+const mesesTxt=m=>m==null?'—':m<1?'menos de 1 mês':Math.floor(m)===1?'1 mês':Math.floor(m)+' meses';
+function viewClientes(){
+  const q=S.qc.trim().toLowerCase();
+  let ls=S.leads.filter(l=>(!S.fEtapa||l.etapa===S.fEtapa)&&(!q||(l.nome+' '+(l.telefone||'')+' '+(l.interesse||'')).toLowerCase().includes(q))).map(l=>({l,i:lastInfo(l)}));
+  if(S.fMeses==='nunca')ls=ls.filter(x=>!x.i.data&&!x.i.futuro);
+  else if(S.fMeses){const[a,b]=S.fMeses.split('-').map(Number);ls=ls.filter(x=>x.i.meses!=null&&x.i.meses>=a&&x.i.meses<b&&(a===0||!x.i.futuro))}
+  ls.sort((a,b)=>S.fMeses&&S.fMeses!=='nunca'?(a.i.data||'').localeCompare(b.i.data||''):(b.l.entrada||'').localeCompare(a.l.entrada||''));
+  const reativa=S.fMeses&&!['','0-1','nunca'].includes(S.fMeses);
+  const msg=(l,i)=>msgFor('retorno',{nome:l.nome,proc:i.proc||l.interesse,meses:i.meses});
+  return `<div class="sechead"><div><h2 class="sec">Clientes</h2><div class="sub">${ls.length} de ${S.leads.length} contatos${reativa?' · ordenadas de quem está há mais tempo sem vir':''}</div></div>
+   <div class="toolbar"><input class="search" id="qc" type="search" placeholder="Buscar nome ou telefone…" value="${esc(S.qc)}" aria-label="Buscar clientes">
+   <select class="search" id="fEtapa" style="width:auto" aria-label="Filtrar por etapa"><option value="">Todas as etapas</option>${STAGES.map(s=>`<option value="${s.id}" ${S.fEtapa===s.id?'selected':''}>${s.label}</option>`).join('')}</select>
+   <select class="search" id="fMeses" style="width:auto" aria-label="Filtrar por tempo sem atendimento">${opt(MESES,S.fMeses)}</select></div></div>
+  ${reativa?`<div class="notice"><span>Clientes sem horário futuro marcado. O botão <b>Mandar mensagem</b> abre o WhatsApp com um convite de retorno pronto; revise antes de enviar.</span></div>`:''}
+  ${ls.length?`<div class="tablewrap"><table><thead><tr><th>Nome</th><th>WhatsApp</th><th>Último procedimento</th><th>Último atendimento</th><th>Sem vir há</th><th>Etapa</th><th>Origem</th><th style="text-align:right">Valor</th></tr></thead><tbody>
+  ${ls.map(({l,i})=>`<tr data-lead="${l.id}"><td><b>${esc(l.nome)}</b>${l.exemplo?' <span class="chip">exemplo</span>':''}</td><td>${waLink(l.telefone)?(reativa?`<a class="wa" href="${waLink(l.telefone,msg(l,i))}" target="_blank" rel="noopener">Mandar mensagem</a>`:`<a class="wa" href="${waLink(l.telefone)}" target="_blank" rel="noopener">${esc(l.telefone)}</a>`):esc(l.telefone||'—')}</td><td>${esc(i.proc||l.interesse||'—')}</td><td>${i.data?brFull(i.data):'—'}</td><td>${i.data?`<span class="chip ${i.meses>=3?'late':''}">${mesesTxt(i.meses)}</span>`:'—'}${i.futuro?' <span class="chip st-confirmado">tem horário</span>':''}</td><td><span class="chip ${l.etapa==='cliente'?'st-realizado':l.etapa==='perdida'?'st-cancelado':''}">${esc(stageLabel(l.etapa))}</span></td><td>${esc(l.origem||'—')}</td><td class="num">${l.valor?money(l.valor):'—'}</td></tr>`).join('')}
+  </tbody></table></div>`:`<div class="panel empty">${S.leads.length?'Nenhuma cliente nesse filtro.':'Nenhuma cliente cadastrada ainda. Toque em <b>+ Novo contato</b> para começar.'}</div>`}`;
+}
+
+/* ---------- eventos ---------- */
+function bind(){
+  document.querySelectorAll('[data-mnav]').forEach(b=>b.onclick=()=>{let[y,m]=S.month.split('-').map(Number);m+=Number(b.dataset.mnav);if(m<1){m=12;y--}if(m>12){m=1;y++}S.month=y+'-'+pad(m);render()});
+  document.querySelectorAll('[data-wnav]').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.wnav);S.week=n?addDays(S.week,n):monday(today());render()});
+  document.querySelectorAll('[data-lead]').forEach(el=>el.addEventListener('click',e=>{if(e.target.closest('a,select'))return;const l=S.leads.find(x=>x.id===el.dataset.lead);if(l)openLead(l)}));
+  document.querySelectorAll('[data-appt]').forEach(el=>el.addEventListener('click',()=>{const a=S.appts.find(x=>x.id===el.dataset.appt);if(a)openAppt(a)}));
+  document.querySelectorAll('[data-mark]').forEach(a=>a.addEventListener('click',()=>setTimeout(()=>markAppt(a.dataset.mark,a.dataset.campo),300)));
+  document.querySelectorAll('[data-addday]').forEach(b=>b.onclick=()=>openAppt({data:b.dataset.addday}));
+  document.querySelectorAll('[data-stagesel]').forEach(s=>s.onchange=()=>{const l=S.leads.find(x=>x.id===s.dataset.stagesel);if(l)setStage(l,s.value)});
+  const q=$('#q');if(q)q.oninput=()=>{S.q=q.value;const p=q.selectionStart;render();const n=$('#q');n.focus();n.setSelectionRange(p,p)};
+  const qc=$('#qc');if(qc)qc.oninput=()=>{S.qc=qc.value;const p=qc.selectionStart;render();const n=$('#qc');n.focus();n.setSelectionRange(p,p)};
+  const fe=$('#fEtapa');if(fe)fe.onchange=()=>{S.fEtapa=fe.value;render()};
+  const fm=$('#fMeses');if(fm)fm.onchange=()=>{S.fMeses=fm.value;render()};
+  document.querySelectorAll('.card[draggable="true"]').forEach(c=>c.ondragstart=e=>{e.dataTransfer.setData('text/plain',c.dataset.lead)});
+  document.querySelectorAll('.col').forEach(col=>{
+    col.ondragover=e=>{e.preventDefault();col.classList.add('over')};
+    col.ondragleave=()=>col.classList.remove('over');
+    col.ondrop=e=>{e.preventDefault();col.classList.remove('over');const l=S.leads.find(x=>x.id===e.dataTransfer.getData('text/plain'));if(l)setStage(l,col.dataset.stage)};
+  });
+}
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;try{history.replaceState(null,'','#'+S.tab)}catch(e){}render()});
+$('#btnSair').onclick=()=>sb&&sb.auth.signOut();
+$('#btnNovoLead').onclick=()=>openLead({});
+$('#btnNovoAppt').onclick=()=>openAppt({data:today()});
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['painel','funil','agenda','clientes'].includes(h)){S.tab=h;render()}});
+{const h=location.hash.slice(1);if(['painel','funil','agenda','clientes'].includes(h))S.tab=h}
+
+/* ---------- modais ---------- */
+function modal(html){const r=$('#modalRoot');r.innerHTML=`<div class="overlay" role="dialog" aria-modal="true"><div class="modal">${html}</div></div>`;
+  const ov=r.firstChild;ov.addEventListener('click',e=>{if(e.target===ov)close()});
+  const k=e=>{if(e.key==='Escape')close()};document.addEventListener('keydown',k);
+  function close(){r.innerHTML='';document.removeEventListener('keydown',k)}
+  setTimeout(()=>{const f=r.querySelector('input,select');if(f)f.focus()},30);
+  return{root:r,close}}
+const opt=(arr,v)=>arr.map(o=>{const[val,lab]=Array.isArray(o)?o:[o,o];return`<option value="${esc(val)}" ${val===v?'selected':''}>${esc(lab)}</option>`}).join('');
+
+function openLead(l){
+  const isNew=!l.id,ro=!S.canWrite;
+  const hist=l.id?S.appts.filter(a=>a.leadId===l.id).sort((a,b)=>b.data.localeCompare(a.data)):[];
+  const m=modal(`<h3>${isNew?'Novo contato':esc(l.nome)}</h3>
+  <form class="form" id="fLead">
+    <div class="field full"><label for="lNome">Nome</label><input id="lNome" required value="${esc(l.nome)}" ${ro?'disabled':''}></div>
+    <div class="field"><label for="lTel">WhatsApp</label><input id="lTel" inputmode="tel" placeholder="(19) 99999-9999" value="${esc(l.telefone)}" ${ro?'disabled':''}></div>
+    <div class="field"><label for="lOrigem">Como chegou</label><select id="lOrigem" ${ro?'disabled':''}>${opt(ORIGENS,l.origem||'Instagram')}</select></div>
+    <div class="field"><label for="lInt">Interesse</label><select id="lInt" ${ro?'disabled':''}>${opt(PROCS,l.interesse||'Avaliação')}</select></div>
+    <div class="field"><label for="lEtapa">Etapa</label><select id="lEtapa" ${ro?'disabled':''}>${opt(STAGES.map(s=>[s.id,s.label]),l.etapa||'novo')}</select></div>
+    <div class="field"><label for="lEntrada">Entrou em</label><input id="lEntrada" type="date" value="${esc(l.entrada||today())}" ${ro?'disabled':''}></div>
+    <div class="field"><label for="lRet">Retornar em</label><input id="lRet" type="date" value="${esc(l.retorno||'')}" ${ro?'disabled':''}></div>
+    <div class="field" id="wValor"><label for="lValor">Valor fechado (R$)</label><input id="lValor" type="number" min="0" step="1" value="${esc(l.valor||'')}" ${ro?'disabled':''}></div>
+    <div class="field" id="wMotivo"><label for="lMotivo">Motivo da perda</label><select id="lMotivo" ${ro?'disabled':''}><option value="">—</option>${opt(MOTIVOS,l.motivoPerda||'')}</select></div>
+    <div class="field"><label for="lUlt">Último atendimento (antes do CRM)</label><input id="lUlt" type="date" value="${esc(l.ultimoAtend||'')}" ${ro?'disabled':''}></div>
+    <div class="field"><label for="lUltP">Procedimento desse atendimento</label><select id="lUltP" ${ro?'disabled':''}><option value="">—</option>${opt(PROCS,l.ultimoProc||'')}</select></div>
+    <div class="field full"><label for="lObs">Observações</label><textarea id="lObs" placeholder="Ex.: prefere horário à tarde, veio pelo anúncio do Clube da Tai" ${ro?'disabled':''}>${esc(l.obs)}</textarea><span class="hint">Evite anotar dados de saúde aqui; use a ficha de anamnese da clínica.</span></div>
+    ${!isNew?`<div class="field full"><label>Enviar mensagem no WhatsApp</label>${waLink(l.telefone)?(()=>{const i=lastInfo(l);const ult=S.appts.filter(a=>a.leadId===l.id&&a.status==='realizado').sort((a,b)=>b.data.localeCompare(a.data))[0];
+      return `<div class="msgs">${waBtn(l.telefone,msgFor('oi',{nome:l.nome}),'Oi')}${waBtn(l.telefone,msgFor('boasvindas',{nome:l.nome}),'Boas-vindas')}${ult?waBtn(l.telefone,msgFor('pos',{nome:l.nome,proc:ult.procedimento,data:ult.data}),'Pós-procedimento'):''}${i.data?waBtn(l.telefone,msgFor('retorno',{nome:l.nome,proc:i.proc||l.interesse,meses:i.meses}),'Convite de retorno'):''}</div><span class="hint">Abre a conversa com a mensagem pronta; é só tocar em enviar.</span>`})():`<span class="hint">Cadastre o WhatsApp da cliente para enviar mensagens.</span>`}</div>`:''}
+    ${hist.length?`<div class="field full"><label>Histórico de agenda</label><div class="list">${hist.map(a=>`<div class="row" style="cursor:default"><span class="time">${br(a.data)}</span><span class="who"><b>${esc(a.procedimento||'')}</b><span>${esc(a.hora||'')}</span></span><span class="chip st-${a.status}">${esc(statusLabel(a.status))}</span></div>`).join('')}</div></div>`:''}
+  </form>
+  <div class="mfoot">${!isNew&&!ro?`<button class="btn danger small" id="lDel" type="button">Excluir</button>`:''}${!isNew&&!ro?`<button class="btn small" id="lAg" type="button">Agendar horário</button>`:''}
+   <div class="right"><button class="btn ghost" id="lCancel" type="button">${ro?'Fechar':'Cancelar'}</button>${ro?'':`<button class="btn primary" id="lSave" type="button">Salvar</button>`}</div></div>`);
+  const sync=()=>{const e=$('#lEtapa').value;$('#wValor').hidden=e!=='cliente';$('#wMotivo').hidden=e!=='perdida'};sync();$('#lEtapa').onchange=sync;
+  $('#lCancel').onclick=m.close;
+  const del=$('#lDel');if(del)del.onclick=async()=>{if(!del.dataset.c){del.dataset.c=1;del.textContent='Confirmar exclusão';return}await delDoc('leads',l.id);m.close();toast('Contato excluído')};
+  const ag=$('#lAg');if(ag)ag.onclick=()=>{m.close();openAppt({leadId:l.id,nome:l.nome,procedimento:l.interesse,data:today()})};
+  const sv=$('#lSave');if(sv)sv.onclick=async()=>{
+    const nome=$('#lNome').value.trim();if(!nome){$('#lNome').focus();toast('Preencha o nome');return}
+    const etapa=$('#lEtapa').value;
+    const d=clean(l);Object.assign(d,{nome,telefone:$('#lTel').value.trim(),origem:$('#lOrigem').value,interesse:$('#lInt').value,etapa,entrada:$('#lEntrada').value||today(),retorno:$('#lRet').value||'',obs:$('#lObs').value.trim(),ultimoAtend:$('#lUlt').value||'',ultimoProc:$('#lUltP').value||'',atualizado:new Date().toISOString()});
+    if(etapa==='cliente'){d.valor=Number($('#lValor').value)||0;d.fechouEm=l.etapa==='cliente'&&l.fechouEm?l.fechouEm:today()}else{delete d.valor;delete d.fechouEm}
+    if(etapa==='perdida'){d.motivoPerda=$('#lMotivo').value;d.perdidaEm=l.etapa==='perdida'&&l.perdidaEm?l.perdidaEm:today()}else{delete d.motivoPerda;delete d.perdidaEm}
+    sv.disabled=true;const id=await saveDoc('leads',l.id,d);sv.disabled=false;if(id){m.close();toast(isNew?'Contato cadastrado':'Alterações salvas')}};
+}
+
+function openAppt(a){
+  const isNew=!a.id,ro=!S.canWrite;
+  const leads=[...S.leads].sort((x,y)=>(x.nome||'').localeCompare(y.nome||''));
+  const m=modal(`<h3>${isNew?'Agendar horário':'Horário de '+esc(a.nome)}</h3>
+  <form class="form" id="fAppt">
+    <div class="field full"><label for="aLead">Cliente</label><select id="aLead" ${ro?'disabled':''}><option value="__new">+ Nova cliente</option>${leads.map(l=>`<option value="${l.id}" ${l.id===a.leadId?'selected':''}>${esc(l.nome)}</option>`).join('')}</select></div>
+    <div class="field" id="wNome"><label for="aNome">Nome da nova cliente</label><input id="aNome" value=""></div>
+    <div class="field" id="wTel"><label for="aTel">WhatsApp</label><input id="aTel" inputmode="tel" placeholder="(19) 99999-9999"></div>
+    <div class="field full"><label for="aProc">Procedimento</label><select id="aProc" ${ro?'disabled':''}>${opt(PROCS,a.procedimento||'Avaliação')}</select></div>
+    <div class="field"><label for="aData">Data</label><input id="aData" type="date" value="${esc(a.data||today())}" ${ro?'disabled':''}></div>
+    <div class="field"><label for="aHora">Horário</label><input id="aHora" type="time" step="900" value="${esc(a.hora||'09:00')}" ${ro?'disabled':''}></div>
+    <div class="field"><label for="aDur">Duração</label><select id="aDur" ${ro?'disabled':''}>${opt([['30','30 min'],['45','45 min'],['60','1 hora'],['90','1h30'],['120','2 horas']],String(a.duracao||60))}</select></div>
+    <div class="field"><label for="aSt">Situação</label><select id="aSt" ${ro?'disabled':''}>${opt(ASTATUS,a.status||'agendado')}</select></div>
+    <div class="field full"><label for="aObs">Observações</label><textarea id="aObs" ${ro?'disabled':''}>${esc(a.obs)}</textarea></div>
+  </form>
+  <div class="mfoot">${!isNew&&!ro?`<button class="btn danger small" id="aDel" type="button">Excluir</button>`:''}<a class="btn small wabtn" id="aConf" href="#" target="_blank" rel="noopener">Confirmar no WhatsApp</a><a class="btn small wabtn" id="aLemb" href="#" target="_blank" rel="noopener">Lembrete</a>
+   <div class="right"><button class="btn ghost" id="aCancel" type="button">${ro?'Fechar':'Cancelar'}</button>${ro?'':`<button class="btn primary" id="aSave" type="button">Salvar</button>`}</div></div>`);
+  const sel=$('#aLead');if(!a.leadId&&leads.length&&!isNew)sel.value='__new';
+  if(isNew&&!a.leadId)sel.value='__new';
+  const sync=()=>{const n=sel.value==='__new';$('#wNome').hidden=$('#wTel').hidden=!n};sync();sel.onchange=()=>{sync();const l=S.leads.find(x=>x.id===sel.value);if(l&&l.interesse)$('#aProc').value=l.interesse};
+  $('#aCancel').onclick=m.close;
+  const setWa=(el,tipo)=>{el.addEventListener('click',e=>{const l=S.leads.find(x=>x.id===sel.value);const tel=l?l.telefone:$('#aTel').value;
+    const txt=msgFor(tipo,{nome:l?l.nome:$('#aNome').value||a.nome,proc:$('#aProc').value,data:$('#aData').value,hora:$('#aHora').value});
+    const href=waLink(tel,txt);if(!href){e.preventDefault();toast('Cadastre o WhatsApp da cliente');return}el.href=href;
+    if(a.id&&tipo==='lembrete')setTimeout(()=>markAppt(a.id,'lembreteEm'),300)})};
+  setWa($('#aConf'),'confirmacao');setWa($('#aLemb'),'lembrete');
+  const del=$('#aDel');if(del)del.onclick=async()=>{if(!del.dataset.c){del.dataset.c=1;del.textContent='Confirmar exclusão';return}await delDoc('agenda',a.id);m.close();toast('Horário excluído')};
+  const sv=$('#aSave');if(sv)sv.onclick=async()=>{
+    let leadId=sel.value,lead=S.leads.find(x=>x.id===leadId);
+    sv.disabled=true;
+    if(leadId==='__new'){const nome=$('#aNome').value.trim();if(!nome){sv.disabled=false;$('#aNome').focus();toast('Preencha o nome da cliente');return}
+      lead={nome,telefone:$('#aTel').value.trim(),origem:'WhatsApp',interesse:$('#aProc').value,etapa:'agendada',entrada:today(),retorno:'',obs:'',atualizado:new Date().toISOString()};
+      leadId=await saveDoc('leads',null,lead);if(!leadId){sv.disabled=false;return}lead.id=leadId}
+    const status=$('#aSt').value;
+    const d=clean(a);Object.assign(d,{leadId,nome:lead.nome,procedimento:$('#aProc').value,data:$('#aData').value||today(),hora:$('#aHora').value,duracao:Number($('#aDur').value),status,obs:$('#aObs').value.trim(),atualizado:new Date().toISOString()});
+    const id=await saveDoc('agenda',a.id,d);sv.disabled=false;if(!id)return;
+    if(lead&&lead.id){const order=['novo','conversa','agendada','atendida'];const cur=order.indexOf(lead.etapa);
+      if(status==='realizado'&&cur>-1&&cur<3)await setStage(lead,'atendida');
+      else if(['agendado','confirmado'].includes(status)&&cur>-1&&cur<2)await setStage(lead,'agendada');}
+    m.close();toast(isNew?'Horário marcado':'Horário atualizado')};
+}
+
+boot();
+</script>
+</body>
+</html>
