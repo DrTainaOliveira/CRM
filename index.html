@@ -32,6 +32,9 @@
   --ok:#8FCB9F; --ok-bg:#24352A; --warn:#E4B66A; --warn-bg:#3A2F1C; --bad:#E79A8D; --bad-bg:#3D2420; --info:#9DB9D8; --info-bg:#222F3D;
   color-scheme:dark}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+img{max-width:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--olive);outline-offset:2px}
@@ -164,6 +167,18 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:520px){.form{grid-template-columns:1fr}.brand b{font-size:24px}}
 #login{min-height:100vh;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-left,0px))}
 .loginbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;width:100%;max-width:380px}
+.booting{min-height:60vh;display:grid;place-items:center;color:var(--muted);font-weight:700}
+#login{position:fixed;inset:0;overflow:auto;background:var(--bg);z-index:40}
+.stagepills{display:none}
+@media (max-width:700px){
+  .stagepills{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+  .stagepills button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 12px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
+  .stagepills button[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:var(--surface)}
+  .board{display:block;overflow:visible}
+  .board .col{min-height:0}
+  .board .col:not(.on){display:none}
+  .card{cursor:pointer}
+}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:700;font-size:14px;z-index:60}
 @media (prefers-reduced-motion:no-preference){.card,.appt,.btn{transition:border-color .15s,background .15s}}
 </style>
@@ -182,7 +197,8 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
     </form>
   </div>
 </section>
-<div id="app">
+<div id="booting" class="booting">Carregando…</div>
+<div id="app" hidden>
 <header class="top">
   <div class="wrap">
     <div class="brand"><b>TAINÁ OLIVEIRA</b><span>CRM da clínica · Leme/SP</span></div>
@@ -219,7 +235,7 @@ const ORIGENS=['Já é cliente','Instagram','Anúncio','WhatsApp','Indicação',
 const MOTIVOS=['Preço','Não respondeu','Desistiu','Agendou e faltou','Foi em outra clínica','Outro'];
 const PROCS=['Avaliação','Toxina botulínica','Preenchimento labial','Bioestimulador de colágeno','Ultrassom microfocado','Revitalização facial','Limpeza de pele','Microagulhamento','Clube da Tai','Outro'];
 const ASTATUS=[['agendado','Agendado'],['confirmado','Confirmado'],['realizado','Realizado'],['faltou','Faltou'],['cancelado','Cancelado']];
-const S={leads:[],appts:[],tab:'painel',month:null,week:null,q:'',qc:'',fEtapa:'',fMeses:'',db:null,canWrite:true,loadedL:false,loadedA:false,slow:false,error:''};
+const S={leads:[],appts:[],tab:'painel',month:null,week:null,q:'',qc:'',fEtapa:'',fMeses:'',mob:'novo',db:null,canWrite:true,loadedL:false,loadedA:false,slow:false,error:''};
 
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -260,11 +276,11 @@ async function loadAll(){
 let reloadT=null;const reloadSoon=()=>{clearTimeout(reloadT);reloadT=setTimeout(loadAll,400)};
 async function boot(){
   render();
-  if(SUPABASE_URL.startsWith('COLE')||!window.supabase){S.error='CRM ainda não configurado: cole a Project URL e a chave anon no arquivo crm.html.';render();return}
+  if(SUPABASE_URL.startsWith('COLE')||!window.supabase){S.error='Não foi possível conectar ao banco. Verifique a internet e recarregue a página.';hideLogin();render();return}
   sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);S.db=sb;
   const {data:{session}}=await sb.auth.getSession();
   sb.auth.onAuthStateChange((ev,s)=>{if(ev==='SIGNED_OUT')showLogin();if(ev==='SIGNED_IN'&&s){hideLogin();start()}});
-  if(session)start();else showLogin();
+  if(session){hideLogin();start()}else showLogin();
 }
 let started=false;
 function start(){
@@ -273,12 +289,12 @@ function start(){
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadAll()});
 }
 function showLogin(){
-  $('#login').hidden=false;$('#app').hidden=true;
+  $('#booting').hidden=true;$('#login').hidden=false;$('#app').hidden=true;window.scrollTo(0,0);
   $('#fLogin').onsubmit=async e=>{e.preventDefault();const btn=$('#lgBtn');btn.disabled=true;$('#lgErr').textContent='';
     const {error}=await sb.auth.signInWithPassword({email:$('#lgEmail').value.trim(),password:$('#lgPass').value});
     btn.disabled=false;if(error)$('#lgErr').textContent='E-mail ou senha incorretos.';};
 }
-function hideLogin(){$('#login').hidden=true;$('#app').hidden=false}
+function hideLogin(){$('#booting').hidden=true;$('#login').hidden=true;$('#app').hidden=false;window.scrollTo(0,0)}
 async function saveDoc(col,id,data){
   if(!sb){toast('CRM não configurado');return null}
   const payload=col==='leads'?toLead(data):toAppt(data);
@@ -401,8 +417,9 @@ function viewFunil(){
   const t=today();
   return `<div class="sechead"><div><h2 class="sec">Funil de clientes</h2><div class="sub">Arraste o cartão para outra coluna ou troque a etapa no próprio cartão</div></div>
    <div class="toolbar"><input class="search" id="q" type="search" placeholder="Buscar nome, procedimento…" value="${esc(S.q)}" aria-label="Buscar no funil"></div></div>
+  <div class="stagepills" role="group" aria-label="Etapas">${STAGES.map(s=>`<button type="button" data-pill="${s.id}" aria-pressed="${S.mob===s.id}">${s.label} · ${ls.filter(l=>l.etapa===s.id).length}</button>`).join('')}</div>
   <div class="board">${STAGES.map(s=>{const items=ls.filter(l=>l.etapa===s.id).sort((a,b)=>(b.atualizado||'').localeCompare(a.atualizado||''));
-    return `<div class="col" data-stage="${s.id}"><div class="colhead"><span><i></i>${s.label}</span><span class="count">${items.length}</span></div>
+    return `<div class="col ${S.mob===s.id?'on':''}" data-stage="${s.id}"><div class="colhead"><span><i></i>${s.label}</span><span class="count">${items.length}</span></div>
     ${items.map(l=>`<div class="card" draggable="${S.canWrite}" data-lead="${l.id}">
       <b>${esc(l.nome)}${l.exemplo?' <span class="chip">exemplo</span>':''}</b>
       <div class="meta">${l.interesse?`<span class="chip">${esc(l.interesse)}</span>`:''}${l.origem?`<span class="chip">${esc(l.origem)}</span>`:''}${l.retorno&&!['cliente','perdida'].includes(l.etapa)?`<span class="chip ${l.retorno<=t?'late':''}">retorno ${br(l.retorno)}</span>`:''}${s.id==='perdida'&&l.motivoPerda?`<span class="chip st-cancelado">${esc(l.motivoPerda)}</span>`:''}${s.id==='cliente'&&l.valor?`<span class="chip st-realizado">${money(l.valor)}</span>`:''}</div>
@@ -462,6 +479,7 @@ function bind(){
   const q=$('#q');if(q)q.oninput=()=>{S.q=q.value;const p=q.selectionStart;render();const n=$('#q');n.focus();n.setSelectionRange(p,p)};
   const qc=$('#qc');if(qc)qc.oninput=()=>{S.qc=qc.value;const p=qc.selectionStart;render();const n=$('#qc');n.focus();n.setSelectionRange(p,p)};
   const fe=$('#fEtapa');if(fe)fe.onchange=()=>{S.fEtapa=fe.value;render()};
+  document.querySelectorAll('[data-pill]').forEach(b=>b.onclick=()=>{S.mob=b.dataset.pill;render()});
   const fm=$('#fMeses');if(fm)fm.onchange=()=>{S.fMeses=fm.value;render()};
   document.querySelectorAll('.card[draggable="true"]').forEach(c=>c.ondragstart=e=>{e.dataTransfer.setData('text/plain',c.dataset.lead)});
   document.querySelectorAll('.col').forEach(col=>{
